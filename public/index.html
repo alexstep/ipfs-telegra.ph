@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <base href="./">
+
+
+    <title>Telegraph - IPFS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="MobileOptimized" content="176" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:site_name" content="Telegraph - IPFS">
+    <meta property="og:title" content="Telegraph - IPFS">
+    <meta property="og:description" content="Telegra.ph is a minimalist publishing tool that allows you to create richly formatted posts and push them to the Web in just a click. Telegraph posts also get beautiful Instant View pages on Telegram.">
+    <meta property="og:image" content="./images/logo.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Telegraph - IPFS">
+    <meta name="twitter:description" content="Telegra.ph is a minimalist publishing tool that allows you to create richly formatted posts and push them to the Web in just a click. Telegraph posts also get beautiful Instant View pages on Telegram.">
+    <meta name="twitter:image" content="./images/logo.png">
+    
+    
+    <link rel="manifest" href="./images/favicons/manifest.json">
+    <meta name="theme-color" content="#333333">
+    <meta name="msapplication-config" content="./images/favicons/browserconfig.xml">
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" href="./images/favicon.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="./images/favicon_2x.png" sizes="32x32">
+    <link rel="apple-touch-icon" sizes="180x180" href="./images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./images/favicons/favicon-16x16.png">
+    <link rel="mask-icon" href="./images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+
+    
+    <link href="./css/quill.core.css" rel="stylesheet">
+    <link href="./css/core.css" rel="stylesheet">
+
+
+    <!-- p2p cache CDN https://www.cachep2p.com/ -->
+    <script src="./js/cachep2p.min.js"></script>
+    <script>
+      if (false) {
+        var cachep2p = new CacheP2P()
+        cachep2p.on('ready', function(){
+          console.log('This page has been cached!')
+        })
+        cachep2p.on('message', console.log)
+        cachep2p.on('alert', console.log)
+        cachep2p.on('success', console.log)
+      }
+    </script>
+
+    <style>
+      .tl_page_wrap {
+        transition: opacity 0.3s linear;
+        opacity:1;
+      }
+    
+      body::before {
+        display:none;
+        color: #333; text-align: center;
+        font-size: 28px;
+        text-transform: uppercase;
+        font-family: CustomSansSerif, 'Lucida Grande', Arial, sans-serif;
+
+        margin: 20%;
+
+        animation: pulsate 1s ease-out;
+        animation-iteration-count: infinite; 
+        -webkit-animation: pulsate 1s ease-out;
+        -webkit-animation-iteration-count: infinite; 
+      } 
+
+      @-webkit-keyframes pulsate {
+        0% {opacity: 0.1;}
+        50% {opacity: 1.0;}
+        100% {opacity: 0.1;}
+      }
+      @keyframes pulsate {
+        0% {opacity: 0.1;}
+        50% {opacity: 1.0;}
+        100% {opacity: 0.1;}
+      }
+
+      body.loading .tl_page_wrap, body.pulishing .tl_page_wrap {
+        opacity:0;
+      }
+      body.loading::before {
+        content: 'Loading...';  display:block;
+      }
+      body.pulishing::before {
+        content: 'Pulishing...';  display:block;
+      }
+
+    </style>
+  </head>
+  <body class="loading">
+    <div class="tl_page_wrap">
+      <div class="tl_page">
+        <main class="tl_article">
+          <header class="tl_article_header">
+            <h1 dir="auto"></h1>
+            <address dir="auto">
+              <a rel="author"></a><!--
+           --><time datetime=""></time>
+            </address>
+          </header>
+          <article id="_tl_editor" class="tl_article_content"><h1><br></h1><address><br></address><p><br></p></article>
+          <div id="_tl_link_tooltip" class="tl_link_tooltip"></div>
+          <div id="_tl_tooltip" class="tl_tooltip">
+            <div class="buttons">
+              <span class="button_hover"></span>
+              <span class="button_group"><!--
+             --><button id="_bold_button"></button><!--
+             --><button id="_italic_button"></button><!--
+             --><button id="_link_button"></button><!--
+           --></span><!--
+           --><span class="button_group"><!--
+             --><button id="_header_button"></button><!--
+             --><button id="_subheader_button"></button><!--
+             --><button id="_quote_button"></button><!--
+           --></span>
+            </div>
+            <div class="prompt">
+              <span class="close"></span>
+              <div class="prompt_input_wrap"><input type="url" class="prompt_input" /></div>
+            </div>
+          </div>
+          <div id="_tl_blocks" class="tl_blocks">
+            <div class="buttons">
+              <button id="_image_button"></button><!--
+           --><button id="_embed_button"></button>
+            </div>
+          </div>
+          <aside class="tl_article_buttons">
+            <div class="account account_top"></div>
+            <button id="_clear_button" class="button clear_button">Clear</button><!--
+         --><button id="_publish_button" class="button publish_button">Publish</button>
+            <div class="account account_bottom"></div>
+            <div id="_error_msg" class="error_msg"></div>
+          </aside>
+        </main>
+      </div>
+    </div>
+    <div id="_tl_alerts" class="tl_alerts"></div>
+    <script>var T={
+        "apiUrl":"https:\/\/edit.telegra.ph","datetime":0,"pageId":0};
+       </script>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/jquery.selection.min.js"></script>
+    <script src="./js/autosize.min.js"></script>
+    <script src="./js/load-image.all.min.js?1"></script>
+    <script src="./js/quill.js?7"></script>
+
+    
+    <!-- ETH Wallet https://github.com/ConsenSys/eth-lightwallet/ -->
+    <!-- <script src="./js/lightwallet.min.js"></script> -->
+
+    <!-- IPFS https://github.com/SilentCicero/ipfs-mini -->
+    <script src="./js/ipfs-mini.min.js"></script>
+    
+    <script src="./js/post_template.js"></script>
+    <script src="./js/p2p.js"></script>
+    <script src="./js/core.js?50"></script>
+  </body>
+</html>

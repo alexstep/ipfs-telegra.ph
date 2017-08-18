@@ -1,0 +1,33 @@
+{
+  "provider": {
+    "host": "ipfs.infura.io",
+    "__host": "localhost",
+    "port": "5001",
+    "opts": {
+      "protocol": "https"
+    }
+  },
+  "versions": [
+    {
+      "hash": "QmZX5VLM3RWfRFmNWTnN71EAaHYM8Euh65PBtXtHvp9dKC",
+      "timestamp": "2017-08-17T17:48:46.446Z"
+    },
+    {
+      "hash": "QmZvbgF5tamAWNiWbwwks2VdTk3wuG3Co7xeGckmkKtMYA",
+      "timestamp": "2017-08-17T17:52:00.294Z"
+    },
+    {
+      "hash": "QmdqnSaGd15PrmdmckebVJzptKrjt2uT65MgHYf8NJM6UP",
+      "timestamp": "2017-08-18T12:20:26.160Z"
+    },
+    {
+      "hash": "QmXvkgRe42F9jGkfu8FsvaEuDMCRhXxTyfEqMsnfF6BN18",
+      "timestamp": "2017-08-18T12:27:27.671Z"
+    },
+    {
+      "hash": "QmSySZ1rAj89NHSahn3TJMh3yxsbYRMcYY4oPmr5TyPMNu",
+      "timestamp": "2017-08-18T12:43:50.616Z"
+    }
+  ],
+  "path": "public"
+}

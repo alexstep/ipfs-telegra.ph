@@ -1,0 +1,24 @@
+{
+  "name": "ipfs-telegraph",
+  "version": "1.0.0",
+  "description": "telegra.ph clone in IPFS",
+  "scripts": {
+    "_postinstall": "sudo yarn add global alexstep/ipscend && sudo npm i -g alexstep/ipscend",
+    "start": "serve -p 7777 ./public",
+    "predeploy": "npm run test",
+    "ipscend": "ipscend",
+    "deploy": "npm run deploy_ipfs",
+    "deploy_swarm": "node scripts/deploy-swarm.js",
+    "deploy_ipfs": "ipscend publish",
+    "test": ""
+  },
+  "keywords": ["p2p","ipfs","telegra.ph","telegraph"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "ipscend": "alexstep/ipscend",
+    "serve": "^6.0.6",
+    "swarm-js": "^0.1.36"
+  }
+}
