@@ -8,11 +8,13 @@
 
     <title>Telegraph - IPFS</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
     <meta name="format-detection" content="telephone=no" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="MobileOptimized" content="176" />
     <meta name="HandheldFriendly" content="True" />
     <meta name="robots" content="index, follow" />
+    
     <meta property="og:site_name" content="Telegraph - IPFS">
     <meta property="og:title" content="Telegraph - IPFS">
     <meta property="og:description" content="Telegra.ph is a minimalist publishing tool that allows you to create richly formatted posts and push them to the Web in just a click. Telegraph posts also get beautiful Instant View pages on Telegram.">
@@ -22,8 +24,8 @@
     <meta name="twitter:description" content="Telegra.ph is a minimalist publishing tool that allows you to create richly formatted posts and push them to the Web in just a click. Telegraph posts also get beautiful Instant View pages on Telegram.">
     <meta name="twitter:image" content="./images/logo.png">
     
-    
-    <link rel="manifest" href="./images/favicons/manifest.json">
+
+    <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#333333">
     <meta name="msapplication-config" content="./images/favicons/browserconfig.xml">
 
@@ -86,14 +88,14 @@
         100% {opacity: 0.1;}
       }
 
-      body.loading .tl_page_wrap, body.pulishing .tl_page_wrap {
+      body.loading .tl_page_wrap, body.publishing .tl_page_wrap {
         opacity:0;
       }
       body.loading::before {
         content: 'Loading...';  display:block;
       }
-      body.pulishing::before {
-        content: 'Pulishing...';  display:block;
+      body.publishing::before {
+        content: 'Publishing...';  display:block;
       }
 
     </style>

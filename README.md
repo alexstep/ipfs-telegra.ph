@@ -6,5 +6,7 @@ npm install
 npm run deploy
 ```
 
+IPFS hash: QmUkwbaYGZwcqo8BAWcfqF81QhSHpr8BgcQsXzFXYiptT1
 
-https://ipfs.io/ipfs/QmXvkgRe42F9jGkfu8FsvaEuDMCRhXxTyfEqMsnfF6BN18
+You can access it through your local node or through a public IPFS gateway:
+https://ipfs.io/ipfs/QmUkwbaYGZwcqo8BAWcfqF81QhSHpr8BgcQsXzFXYiptT1

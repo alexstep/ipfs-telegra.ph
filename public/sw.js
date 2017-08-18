@@ -1,4 +1,4 @@
-var version = 'v1::';
+var version = 'v1::3';
 
 var files = [
 	'/',

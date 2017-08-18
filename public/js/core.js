@@ -1305,7 +1305,6 @@ function savePage() {
     return false;
   }
 
-  $('body').addClass('pulishing')
   let title      = $('h1', $tl_content).text();
   let author     = $('address', $tl_content).text();
   let author_url = $('address a', $tl_content).attr('href') || '';
@@ -1324,6 +1323,7 @@ function savePage() {
   }
 
 
+  $('body').addClass('publishing')
   $tl_article.addClass('tl_article_saving');
   updateEditable(false);
 
@@ -1337,12 +1337,15 @@ function savePage() {
   // Create html page in IPFS
   ipfs.add(page_html, function(err, datahash){
     $tl_article.removeClass('tl_article_saving');
-    $('body').removeClass('pulishing')
+    $('body').removeClass('publishing')
    
     if (err) {
         updateEditable(true);
-        console.error('Save error: '+err)
-        return showError('PROBLEM... \n'+JSON.stringify(err));
+        var str = ''
+        if (typeof navigator!=='undefined' && navigator.onLine===false) {
+          str = 'maybe it because you OFFLINE?'
+        }
+        return showError('SOME PROBLEM... \n'+err+'\n'+str);
     }
 
     if (!err && datahash) {
