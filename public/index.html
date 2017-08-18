@@ -64,12 +64,14 @@
     
       body::before {
         display:none;
+        width: 100%;
         color: #333; text-align: center;
         font-size: 28px;
         text-transform: uppercase;
         font-family: CustomSansSerif, 'Lucida Grande', Arial, sans-serif;
 
-        margin: 20%;
+        margin-top: 20%;
+        position: fixed;
 
         animation: pulsate 1s ease-out;
         animation-iteration-count: infinite; 
@@ -99,6 +101,7 @@
       }
 
     </style>
+
   </head>
   <body class="loading">
     <div class="tl_page_wrap">
@@ -158,11 +161,6 @@
     <script src="./js/load-image.all.min.js?1"></script>
     <script src="./js/quill.js?7"></script>
 
-    
-    <!-- ETH Wallet https://github.com/ConsenSys/eth-lightwallet/ -->
-    <!-- <script src="./js/lightwallet.min.js"></script> -->
-
-    <!-- IPFS https://github.com/SilentCicero/ipfs-mini -->
     <script src="./js/ipfs-mini.min.js"></script>
     
     <script src="./js/post_template.js"></script>

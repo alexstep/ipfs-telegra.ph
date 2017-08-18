@@ -12,10 +12,17 @@
     "deploy_ipfs": "ipscend publish",
     "test": ""
   },
-  "keywords": ["p2p","ipfs","telegra.ph","telegraph"],
+  "keywords": [
+    "p2p",
+    "ipfs",
+    "telegra.ph",
+    "telegraph"
+  ],
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "serve-https": "^2.2.1"
+  },
   "devDependencies": {
     "ipscend": "alexstep/ipscend",
     "serve": "^6.0.6",

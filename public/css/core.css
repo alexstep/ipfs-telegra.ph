@@ -61,19 +61,22 @@ textarea {
 }
 .tl_article_buttons {
   position: fixed;
-  left: 50%;
+  // left: 50%;
   top: 0;
-  right: 0;
-  margin: 46px 0 0 376px;
+  right: 5%;
+  margin: 20px 0 0 0;
 }
-@media (max-width: 960px) {
-  .tl_article_buttons {
-    position: static;
-    width: auto;
-    margin: 30px 21px;
-    padding: 1px 0;
-  }
+#_tl_editor {
+  margin-top:50px;
 }
+// @media (max-width: 960px) {
+//   .tl_article_buttons {
+//     position: static;
+//     width: auto;
+//     margin: 30px 21px;
+//     padding: 1px 0;
+//   }
+// }
 .tl_article_buttons .button {
   transition: opacity 0.4s ease;
   visibility: hidden;
