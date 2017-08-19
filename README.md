@@ -10,7 +10,7 @@ npm run deploy
 https://github.com/haadcode/ipfs-daemon
 
 
-IPFS hash: QmTybUpvuf6BTa6yEAyfyTyuSZbhzBXN9PNe41qovQT9nb
+IPFS hash: QmbvveWddPW9ogjhPfByJybDAeE42eHna6a8bf6Qk2SF9B
 
 You can access it through your local node or through a public IPFS gateway:
-https://ipfs.io/ipfs/QmTybUpvuf6BTa6yEAyfyTyuSZbhzBXN9PNe41qovQT9nb
+https://ipfs.io/ipfs/QmbvveWddPW9ogjhPfByJybDAeE42eHna6a8bf6Qk2SF9B

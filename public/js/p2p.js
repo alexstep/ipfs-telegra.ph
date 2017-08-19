@@ -8,30 +8,32 @@ document.addEventListener('DOMContentLoaded', function(){
 		window.ipfs_gateway = 'https://ipfs.io/ipfs/'
 	}
 
-
 	// IPFS
 	window.ipfs = new IPFS();
 	ipfs.setProvider({host: 'ipfs.infura.io', protocol:'https'})
+	
+	window.save2IPFS = function(d, c) {
+		ipfs.add(d,c)
+	}
 
-	startApp()
+	initView()
 })
 
 
-var quill       = false;
-var pageContent = false;
-function startApp(){
-	quill = initQuill();
+function initView(){
+	window.pageContent = false;
+	window.quill       = initQuill();
 
 	if (browser.mobile) {
 	  $(document.body).addClass('mobile');
 	}
 
-	checkAuth()
+	startTelegraph()
 
 	$('body').removeClass('loading')
 }
 
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js')
+	navigator.serviceWorker.register('./sw.js')
 }

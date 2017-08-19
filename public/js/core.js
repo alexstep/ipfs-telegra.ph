@@ -1,3 +1,5 @@
+var T = {"apiUrl":"https:\/\/edit.telegra.ph","datetime":0,"pageId":0};
+
 let ua = navigator.userAgent.toLowerCase();
 let browser = {
   opera: (/opera/i.test(ua) || /opr/i.test(ua)),
@@ -1335,7 +1337,7 @@ function savePage() {
   var page_html    = renderPostPage(title, desc, author, content)
   
   // Create html page in IPFS
-  ipfs.add(page_html, function(err, datahash){
+  save2IPFS(page_html, function(err, datahash){
     $tl_article.removeClass('tl_article_saving');
     $('body').removeClass('publishing')
    
@@ -1407,8 +1409,7 @@ function savePage() {
   });
 }
 
-function checkAuth() {
-    
+function startTelegraph() {
     $tl_article.addClass('tl_article_edit');
 
     if (!draftGet()) {
@@ -1426,63 +1427,6 @@ function checkAuth() {
     }
   pageContent = getPageContent(true);
   updateEditable(isEdit());
-
-  return
-
-  $.ajax(T.apiUrl + '/check', {
-    data: {
-      page_id: T.pageId,
-    },
-    type: 'POST',
-    dataType: 'json',
-    xhrFields: {
-      withCredentials: true,
-    },
-    success: function(data) {
-      if (data.can_edit || !T.pageId) {
-        if (data.short_name) {
-          $account.text(data.short_name);
-        }
-        $tl_article.addClass('tl_article_editable');
-      }
-      // if (!T.pageId) {
-        $tl_article.addClass('tl_article_edit');
-        if (!draftGet() && data.author_name) {
-          if (data.author_url) {
-            var format = {link: data.author_url};
-          } else {
-            var format = {};
-          }
-          let [author] = quill.scroll.descendants(AuthorBlot);
-          if (author) {
-            quill.updateContents(new Delta()
-              .retain(author.offset())
-              .delete(author.length())
-              .insert(data.author_name, format)
-            , Quill.sources.USER);
-          }
-        }
-      // }
-      if (data.auth_alert && data.short_name) {
-        var alert_text = 'Success! You are now logged in as <b>' + htsc(data.short_name) + '</b> in this browser.';
-        if (data.migrate_count > 0 && data.migrate_hash) {
-          alert_text += '<br/><br/>';
-          alert_text += 'We can also add ' + data.migrate_count + ' Telegraph page' + (data.migrate_count > 1 ? 's' : '') + ' from this browser to your account.'
-          showAlert(alert_text, {
-            close_btn: 'Skip',
-            submit_btn: 'Add',
-            submit: function() {
-              migratePages(data.migrate_hash);
-            }
-          });
-        } else {
-          showAlert(alert_text);
-        }
-      }
-      pageContent = getPageContent(true);
-      updateEditable(isEdit());
-    }
-  });
 }
 
 function migratePages(migrate_hash) {
