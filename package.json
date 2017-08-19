@@ -5,11 +5,9 @@
   "scripts": {
     "_postinstall": "sudo yarn add global alexstep/ipscend && sudo npm i -g alexstep/ipscend",
     "start": "serve -p 7777 ./public",
-    "predeploy": "npm run test",
+    "predeploy": "",
     "ipscend": "ipscend",
-    "deploy": "npm run deploy_ipfs",
-    "deploy_swarm": "node scripts/deploy-swarm.js",
-    "deploy_ipfs": "ipscend publish",
+    "deploy": "ipscend publish",
     "test": ""
   },
   "keywords": [
