@@ -19,11 +19,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "serve-https": "^2.2.1"
   },
   "devDependencies": {
     "ipscend": "alexstep/ipscend",
-    "serve": "^6.0.6",
-    "swarm-js": "^0.1.36"
+    "serve": "^6.0.6"
   }
 }
