@@ -23,6 +23,6 @@ npm run deploy
 ```
 
 ## Thanks
-https://github.com/silentcicero/ipfs-mini
-http://telegra.ph
-https://www.cachep2p.com
+ * https://github.com/silentcicero/ipfs-mini
+ * http://telegra.ph
+ * https://www.cachep2p.com
