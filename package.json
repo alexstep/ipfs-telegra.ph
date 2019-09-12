@@ -4,7 +4,7 @@
   "description": "telegra.ph clone in IPFS",
   "scripts": {
     "_postinstall": "sudo yarn add global alexstep/ipscend && sudo npm i -g alexstep/ipscend",
-    "start": "serve -p 7777 ./public",
+    "start": "npx serve -p 7777 ./public",
     "predeploy": "",
     "ipscend": "ipscend",
     "deploy": "ipscend publish",
@@ -21,7 +21,6 @@
   "dependencies": {
   },
   "devDependencies": {
-    "ipscend": "alexstep/ipscend",
-    "serve": "^6.0.6"
+    "ipscend": "alexstep/ipscend"
   }
 }
