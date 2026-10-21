@@ -1,21 +1,47 @@
 name: Publish site
 
 on:
-  pull_request:
-    branches:
-      - master
   push:
-    branches:
-      - master
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: 8
-          registry-url: https://registry.npmjs.org/
-      - run: npm i
-      - run: npm run deploy
+          bun-version: 1.4.3
+      - run: bun install --frozen-lockfile
+      - run: bun test
+      - run: bun run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - name: Pin the built site to IPFS
+        if: ${{ secrets.PINNING_TOKEN != '' }}
+        env:
+          PINNING_TOKEN: ${{ secrets.PINNING_TOKEN }}
+          PINNING_ENDPOINT: ${{ secrets.PINNING_ENDPOINT }}
+        run: bun run pin:site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

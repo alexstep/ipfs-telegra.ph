@@ -1,26 +1,26 @@
 {
   "name": "ipfs-telegraph",
-  "version": "1.0.0",
-  "description": "telegra.ph clone in IPFS",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Minimal Telegraph-style editor that publishes articles to IPFS",
+  "type": "module",
   "scripts": {
-    "_postinstall": "sudo yarn add global alexstep/ipscend && sudo npm i -g alexstep/ipscend",
-    "start": "npx serve -p 7777 ./public",
-    "predeploy": "",
-    "ipscend": "ipscend",
-    "deploy": "ipscend publish",
-    "test": ""
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4173",
+    "test": "bun test",
+    "pin:site": "bun scripts/pin-site.ts"
   },
-  "keywords": [
-    "p2p",
-    "ipfs",
-    "telegra.ph",
-    "telegraph"
-  ],
-  "author": "",
   "license": "ISC",
   "dependencies": {
+    "blockstore-core": "^7.0.1",
+    "ipfs-unixfs-importer": "^17.1.1",
+    "multiformats": "^14.0.5"
   },
   "devDependencies": {
-    "ipscend": "alexstep/ipscend"
+    "ipfs-unixfs-exporter": "^16.2.3",
+    "linkedom": "^0.18.14",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5"
   }
 }
