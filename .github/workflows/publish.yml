@@ -17,19 +17,24 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # The secrets context is not allowed in a step `if:`, so expose only
+    # whether the token is set and pass the secrets to the pin step itself.
+    env:
+      HAS_PINNING_TOKEN: ${{ secrets.PINNING_TOKEN != '' }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
           bun-version: 1.4.3
       - run: bun install --frozen-lockfile
       - run: bun test
       - run: bun run build
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: dist
       - name: Pin the built site to IPFS
-        if: ${{ secrets.PINNING_TOKEN != '' }}
+        if: ${{ env.HAS_PINNING_TOKEN == 'true' }}
         env:
           PINNING_TOKEN: ${{ secrets.PINNING_TOKEN }}
           PINNING_ENDPOINT: ${{ secrets.PINNING_ENDPOINT }}
@@ -44,4 +49,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
