@@ -1,33 +1,33 @@
 # Telegraph
 
-Минималистичный редактор в духе [telegra.ph](https://telegra.ph): заголовок, автор, текст, ссылки, картинки и цитаты. По кнопке Publish статья становится каталогом в IPFS (`index.html` и `article.json`), а ссылка открывает её снова.
+A minimal editor in the style of [telegra.ph](https://telegra.ph): a title, an author, text, links, images, and quotes. Publish turns the article into an IPFS directory (`index.html` and `article.json`) and opens a link to it.
 
-Старый клиент 2017–2019 годов ходил в IPFS через `ipfs-mini` и Infura и публиковал сам сайт утилитой `ipscend`. Infura этот API закрыла, `js-ipfs` больше не развивается, а `ipscend` тянул глобальную установку. Этот репозиторий — тот же сценарий на актуальном стеке.
+The 2017–2019 client wrote to IPFS through `ipfs-mini` and Infura, and published the site itself with `ipscend`. Infura has shut that API down, `js-ipfs` is no longer maintained, and `ipscend` required a global install. This repository is the same product on a current stack.
 
-Последняя опубликованная версия старого сайта: `QmbvveWddPW9ogjhPfByJybDAeE42eHna6a8bf6Qk2SF9B`.
+Last published copy of the old site: `QmbvveWddPW9ogjhPfByJybDAeE42eHna6a8bf6Qk2SF9B`.
 
-## Стек
+## Stack
 
-- [Bun](https://bun.sh) — установка зависимостей, тесты и скрипт публикации сайта.
-- [Vite](https://vite.dev) и TypeScript — сборка статического клиента. `Bun.build` быстрее на сыром бандлинге, но здесь нужен dev-сервер, относительный `base` (GitHub Pages и шлюз IPFS открывают сайт не с корня домена) и обычные файлы из `public/`. Это как раз работа Vite.
-- Запись в IPFS — HTTP, а не узел в браузере. Браузерный Helia посчитал бы CID, но не оставил бы статью доступной другим людям: публичные шлюзы её не увидят, пока байты не лежат на узле, который кто-то держит в сети. Поэтому публикация идёт во внешний пиннинг.
-- Локальный режим без ключа считает CID профилем UnixFS `unixfs-v1-2025` (библиотека `ipfs-unixfs-importer`, та же, что использует Helia) и кладёт файлы в IndexedDB этого браузера.
-- Чтение — обычный HTTPS к нескольким публичным шлюзам, по очереди. 21 октября 2026 проверены ответы и CORS:
-  - `https://gateway.pinata.cloud/ipfs` — отдаёт и HTML, и картинки;
-  - `https://ipfs.filebase.io/ipfs` — то же;
-  - `https://4everland.io/ipfs` — запасной, редиректит на поддомен CID.
-  - `ipfs.io` и `dweb.link` для программного доступа уже отдают 429 (sunset 21 сентября 2026) и в список не входят. `w3s.link` (Storacha) больше не раздаёт файлы: загрузка в Storacha отключена в апреле 2026, шлюз — в мае.
+- [Bun](https://bun.sh) installs dependencies, runs tests, and runs the site-publish script.
+- [Vite](https://vite.dev) and TypeScript build the static client. `Bun.build` is faster for a raw bundle, but this app needs a dev server, a relative `base` (GitHub Pages and an IPFS gateway do not serve the site from the domain root), and plain files from `public/`. That is what Vite is for.
+- Writes go over HTTP, not through a browser IPFS node. A browser Helia node could compute a CID, but it would not keep the article available to anyone else: public gateways cannot see the bytes until some node on the network is holding them. Publishing therefore goes to an external pinning service.
+- With no key, local mode computes a CID with the UnixFS `unixfs-v1-2025` profile (`ipfs-unixfs-importer`, the same library Helia uses) and stores the files in this browser's IndexedDB.
+- Reads are plain HTTPS against several public gateways, one after another. On 21 October 2026 these responded and sent CORS headers:
+  - `https://gateway.pinata.cloud/ipfs` serves both HTML and images.
+  - `https://ipfs.filebase.io/ipfs` does the same.
+  - `https://4everland.io/ipfs` is the fallback. It redirects to the CID subdomain.
+  - `ipfs.io` and `dweb.link` already return 429 to programmatic clients (sunset 21 September 2026) and are not in the list. `w3s.link` (Storacha) no longer serves files: Storacha uploads stopped in April 2026 and the gateway stopped in May.
 
-## Запуск
+## Run
 
 ```bash
 bun install
 bun run dev
 ```
 
-Откроется `http://127.0.0.1:5173`. Дальше: написать заголовок и текст, Publish, открыть ссылку вида `#/p/<cid>`.
+That opens `http://127.0.0.1:5173`. Write a title and some text, press Publish, and open the `#/p/<cid>` link.
 
-Без ключа статья сохраняется только в этом браузере. На странице статьи это написано отдельно. History показывает, что публиковали с этого устройства.
+Without a key the article stays in this browser. The article page says so. History lists what this device has published.
 
 ```bash
 bun test
@@ -35,52 +35,52 @@ bun run build
 bun run preview
 ```
 
-## Пиннинг
+## Pinning
 
-Ключ не коммитится. Его можно вписать в Settings на странице (значение остаётся в `localStorage`) или, для своей сборки, в `.env`. Переменные с префиксом `VITE_` попадают в собранный JavaScript и видны каждому посетителю, поэтому для общего деплоя токен лучше не запекать.
+The key is not committed. Enter it in Settings on the page (it stays in `localStorage`) or, for your own build, in `.env`. Variables prefixed with `VITE_` are baked into the built JavaScript and are visible to every visitor, so do not bake a token into a deploy that other people will open.
 
-Скопируйте `.env.example` в `.env`, если нужны значения по умолчанию.
+Copy `.env.example` to `.env` if you want defaults.
 
 ### Pinata
 
-1. В [Pinata](https://app.pinata.cloud) создайте API key и скопируйте JWT.
-2. В Settings выберите Pinata. Endpoint: `https://api.pinata.cloud`. Вставьте JWT.
-3. Publish. Клиент шлёт каталог на `POST /pinning/pinFileToIPFS` (`cidVersion: 1`, `wrapWithDirectory: true`) и берёт `IpfsHash` из ответа. Этот метод всё ещё описан в документации Pinata: v3 `POST /v3/files` папки не принимает.
-4. Статья откроется по `#/p/<cid>` и по шлюзу `https://gateway.pinata.cloud/ipfs/<cid>/`. Свой выделенный шлюз можно указать в поле Dedicated gateway — он опрашивается первым.
+1. In [Pinata](https://app.pinata.cloud), create an API key and copy the JWT.
+2. In Settings, choose Pinata. Endpoint: `https://api.pinata.cloud`. Paste the JWT.
+3. Publish. The client sends the directory to `POST /pinning/pinFileToIPFS` (`cidVersion: 1`, `wrapWithDirectory: true`) and uses `IpfsHash` from the response. Pinata's docs still describe this method: v3 `POST /v3/files` does not accept folders.
+4. The article opens at `#/p/<cid>` and at `https://gateway.pinata.cloud/ipfs/<cid>/`. A dedicated gateway can be set in Dedicated gateway. It is tried first.
 
 ### IPFS Pinning Service API
 
-Подходит любой сервис со спецификацией [IPFS Pinning Service API](https://ipfs.github.io/pinning-services-api-spec/). У Pinata это `https://api.pinata.cloud/psa` и тот же JWT.
+Any service that implements the [IPFS Pinning Service API](https://ipfs.github.io/pinning-services-api-spec/) works. Pinata's base URL is `https://api.pinata.cloud/psa`, with the same JWT.
 
-Спецификация закрепляет уже существующий CID и сама файлы не принимает. Поэтому нужен ещё Kubo HTTP API (`http://127.0.0.1:5001` для локального `ipfs daemon`): клиент делает `POST /api/v0/add`, затем `POST <endpoint>/pins`. Узел должен быть доступен сервису пиннинга, иначе заявка останется в очереди.
+The specification pins a CID that already exists. It does not accept the files. A Kubo HTTP API is also required (`http://127.0.0.1:5001` for a local `ipfs daemon`): the client calls `POST /api/v0/add`, then `POST <endpoint>/pins`. The node has to be reachable by the pinning service, or the request stays queued.
 
-### Только Kubo
+### Kubo only
 
-Режим Kubo добавляет каталог на указанный узел. Узел хранит файлы сам. Шлюзы увидят их, если узел доступен сети.
+Kubo mode adds the directory to the node you name. That node stores the files. Gateways can see them when the node is reachable on the network.
 
-### Как проверить с настоящим ключом
+### Check it with a real key
 
-1. Поднимите `bun run dev`.
-2. Settings → Pinata → JWT → Save. Под кнопкой Publish должно быть написано Pinata, а не This browser.
-3. Опубликуйте короткую статью с картинкой.
-4. Откройте ссылку из блока «Pinned» на `gateway.pinata.cloud` в приватном окне, где нет localStorage этого сайта. Текст и картинка должны открыться без локального кэша.
-5. Если первый шлюз не отвечает, клиент читает `article.json` и картинки со следующего из списка выше.
+1. Run `bun run dev`.
+2. Settings → Pinata → JWT → Save. Under Publish the label should say Pinata, not This browser.
+3. Publish a short article with an image.
+4. Open the `gateway.pinata.cloud` link from the Pinned line in a private window that does not have this site's localStorage. The text and the image should load without the local cache.
+5. If the first gateway does not answer, the client reads `article.json` and the images from the next gateway in the list above.
 
-## Деплой
+## Deploy
 
-Старый workflow ставил Node 8 и вызывал `ipscend publish` в Infura. Теперь сборка публикуется на GitHub Pages, а в IPFS уходит только если в секретах репозитория есть `PINNING_TOKEN` (необязательно `PINNING_ENDPOINT`, по умолчанию Pinata).
+The old workflow installed Node 8 and ran `ipscend publish` against Infura. The build now goes to GitHub Pages, and to IPFS only when the repository secret `PINNING_TOKEN` is set (`PINNING_ENDPOINT` is optional and defaults to Pinata).
 
-В настройках репозитория источник Pages нужно переключить на GitHub Actions. Секрет в клиентский бандл не попадает: workflow заливает уже собранный `dist/`.
+In the repository settings, set the Pages source to GitHub Actions. The secret is not part of the client bundle: the workflow uploads the built `dist/`.
 
 ```bash
 PINNING_TOKEN=... bun run build
 PINNING_TOKEN=... bun run pin:site
 ```
 
-История версий самого сайта — список пинов в кабинете сервиса (имя `ipfs-telegraph <дата>`). Раньше её вёл `ipscend.json`. История статей живёт в браузере, в разделе History; повторная публикация из Edit создаёт новый CID и запоминает предыдущий.
+Versions of the site itself are the pin list in the provider's dashboard (name `ipfs-telegraph <date>`). `ipscend.json` used to keep that list. Article history lives in the browser, under History. Publishing again from Edit creates a new CID and records the previous one.
 
-## Что изменилось
+## What stayed
 
-Остались пустая страница с полями Title, Your name и Your story, кнопка Publish, тёмная панель Bold / Italic / Link / заголовки / цитата и кнопки картинки и вставки на пустой строке. Опубликованная страница — колонка той же ширины, заголовок, автор, дата и текст.
+The empty page still has Title, Your name, and Your story, a Publish button, a dark toolbar for bold, italic, link, headings, and quote, and image and embed buttons on an empty line. A published page is the same width column, with a title, author, date, and text.
 
-Ушли jQuery, Quill, `ipfs-mini`, CacheP2P, service worker, загрузка видео и обращение к API telegra.ph, которое в старом коде уже не вызывалось. Картинки больше не остаются data URL внутри одной HTML-страницы: они лежат в каталоге IPFS рядом со статьёй.
+jQuery, Quill, `ipfs-mini`, CacheP2P, the service worker, video upload, and the unused calls to the telegra.ph API are gone. Images are files in the IPFS directory next to the article, not data URLs inside a single HTML page.
